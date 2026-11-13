@@ -1,0 +1,364 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adrian Delicacies · Food delivery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #f9f7f4; color: #1e1e1e; }
+    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 12px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 700; cursor: pointer; }
+    .logo i, .logo span { color: #ff6b35; }
+    .inquiry-top { display: flex; align-items: center; gap: 8px; background: #f4f1ee; padding: 6px 18px; border-radius: 40px; font-size: 14px; font-weight: 500; }
+    .inquiry-top i { color: #ff6b35; }
+    .inquiry-top a { text-decoration: none; color: #2d2a24; font-weight: 600; }
+    .nav-links { display: flex; gap: 28px; font-weight: 500; }
+    .nav-links a { text-decoration: none; color: #2d2a24; cursor: pointer; }
+    .nav-links a:hover { color: #ff6b35; }
+    .nav-icons { display: flex; align-items: center; gap: 20px; }
+    .nav-icons i { font-size: 20px; color: #2d2a24; cursor: pointer; }
+    .nav-icons i:hover { color: #ff6b35; }
+    .cart-badge { position: relative; cursor: pointer; }
+    .cart-badge::after { content: attr(data-count); position: absolute; top: -8px; right: -10px; background: #ff6b35; color: white; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 30px; }
+    .hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 40px 32px 20px; max-width: 1300px; margin: 0 auto; }
+    .hero-content { flex: 1 1 300px; }
+    .hero-content h1 { font-size: 48px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .hero-content h1 span { color: #ff6b35; }
+    .hero-content p { font-size: 18px; color: #5f5a54; margin-bottom: 28px; max-width: 450px; }
+    .search-box { display: flex; align-items: center; background: white; border-radius: 60px; padding: 6px 6px 6px 24px; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1); max-width: 500px; width: 100%; border: 1px solid #eeece9; }
+    .search-box i { color: #b0aaa2; }
+    .search-box input { border: none; outline: none; padding: 14px 16px; font-size: 16px; flex: 1; background: transparent; }
+    .search-box button { background: #ff6b35; border: none; color: white; font-weight: 600; padding: 14px 30px; border-radius: 50px; cursor: pointer; }
+    .search-box button:hover { background: #e55a2b; }
+    .hero-image { flex: 1 1 300px; display: flex; justify-content: center; }
+    .hero-image img { max-width: 100%; width: 380px; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; background: #ffd9c2; padding: 10px; object-fit: cover; }
+    .categories, .restaurants, .promo-banner { max-width: 1300px; margin: 40px auto 20px; padding: 0 32px; }
+    .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
+    .section-header h2 { font-size: 28px; font-weight: 700; }
+    .section-header a { color: #ff6b35; font-weight: 600; font-size: 15px; cursor: pointer; }
+    .category-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+    .category-card { background: white; border-radius: 40px; padding: 12px 28px; font-weight: 600; color: #2d2a24; border: 1px solid #f0ede9; cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none; transition: all .2s; }
+    .category-card i { color: #ff6b35; }
+    .category-card:hover, .category-card.active { background: #ff6b35; color: white; border-color: #ff6b35; }
+    .category-card:hover i, .category-card.active i { color: white; }
+    .dish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+    .dish-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 24px -8px rgba(0,0,0,0.06); border: 1px solid #f3efeb; display: flex; flex-direction: column; transition: transform .2s; }
+    .dish-card:hover { transform: translateY(-6px); }
+    .dish-image { height: 160px; background-size: cover; background-position: center; position: relative; }
+    .price-tag { position: absolute; bottom: 10px; right: 12px; background: white; padding: 6px 14px; border-radius: 40px; font-weight: 700; font-size: 15px; }
+    .dish-info { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+    .dish-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .restaurant-name { font-size: 14px; color: #8a837b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .restaurant-name i { font-size: 12px; color: #ff6b35; }
+    .dish-meta { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #5f5a54; margin-top: auto; padding-top: 10px; border-top: 1px solid #f0ede9; }
+    .dish-meta i { color: #ffb347; margin-right: 4px; }
+    .time { display: flex; align-items: center; gap: 4px; background: #f4f1ee; padding: 4px 10px; border-radius: 30px; }
+    .add-to-cart { margin-left: auto; background: #ff6b35; border: none; color: white; width: 32px; height: 32px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .add-to-cart:hover { background: #e55a2b; }
+    .add-to-cart i { color: white; font-size: 14px; }
+    .banner-content { background: linear-gradient(135deg, #ff6b35, #ff8b5a); border-radius: 30px; padding: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; color: white; }
+    .banner-btn { background: white; border: none; color: #ff6b35; font-weight: 700; padding: 14px 32px; border-radius: 40px; cursor: pointer; }
+    .footer { background: white; padding: 40px 32px 30px; border-top: 1px solid #eeece9; margin-top: 30px; }
+    .footer-inner { max-width: 1300px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; }
+    .footer-brand h4 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .footer-brand h4 i { color: #ff6b35; margin-right: 6px; }
+    .footer-brand p { color: #8a837b; font-size: 14px; max-width: 260px; }
+    .footer-inquiry { display: flex; align-items: center; gap: 10px; background: #f9f7f4; padding: 12px 18px; border-radius: 30px; margin-top: 16px; border: 1px solid #f0ede9; }
+    .footer-inquiry i { color: #ff6b35; }
+    .footer-inquiry a { text-decoration: none; color: #2d2a24; font-weight: 700; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 60px; }
+    .link-column h5 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    .link-column a { display: block; color: #7b756e; font-size: 14px; margin-bottom: 10px; cursor: pointer; }
+    .link-column a:hover { color: #ff6b35; }
+    .copyright { text-align: center; padding-top: 40px; color: #b0aaa2; font-size: 13px; border-top: 1px solid #f0ede9; margin-top: 40px; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e1b18; color: white; padding: 14px 28px; border-radius: 50px; font-weight: 500; opacity: 0; transition: all .3s ease; z-index: 1000; pointer-events: none; display: flex; align-items: center; gap: 10px; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast i { color: #ff6b35; }
+    .cart-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .cart-modal-overlay.active { display: flex; }
+    .cart-modal { background: white; border-radius: 30px; padding: 30px; max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; position: relative; }
+    .cart-modal h2 { font-size: 24px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .cart-modal h2 i { color: #ff6b35; }
+    .close-modal { position: absolute; top: 18px; right: 22px; background: none; border: none; font-size: 22px; cursor: pointer; color: #8a837b; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0ede9; }
+    .cart-item-info h4 { font-size: 16px; }
+    .cart-item-info span { font-size: 14px; color: #8a837b; }
+    .cart-item-actions { display: flex; align-items: center; gap: 12px; }
+    .cart-item-actions button { background: #f4f1ee; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
+    .cart-item-actions button:hover { background: #ff6b35; color: white; }
+    .cart-total { display: flex; justify-content: space-between; padding-top: 20px; font-weight: 700; font-size: 20px; }
+    .cart-total span:last-child { color: #ff6b35; }
+    .cart-empty { text-align: center; padding: 40px 0; color: #8a837b; }
+    .cart-empty i { font-size: 48px; color: #ddd; margin-bottom: 16px; display: block; }
+    .checkout-btn { width: 100%; background: #ff6b35; border: none; color: white; font-weight: 700; padding: 16px; border-radius: 50px; cursor: pointer; margin-top: 20px; }
+    .checkout-btn:hover { background: #e55a2b; }
+    .no-results { text-align: center; padding: 40px 0; color: #8a837b; grid-column: 1 / -1; }
+    .no-results i { font-size: 48px; color: #ddd; margin-bottom: 16px; display: block; }
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .hero-content h1 { font-size: 36px; }
+      .search-box { flex-wrap: wrap; background: transparent; box-shadow: none; padding: 0; gap: 10px; }
+      .search-box input { background: white; border-radius: 60px; padding: 16px 24px; border: 1px solid #eeece9; width: 100%; }
+      .search-box button { width: 100%; padding: 16px; }
+      .search-box i { display: none; }
+      .banner-content { flex-direction: column; text-align: center; gap: 22px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (max-width: 500px) {
+      .dish-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .dish-image { height: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo" onclick="scrollToTop()"><i class="fas fa-utensils"></i> Adrian <span>Delicacies</span></div>
+    <div class="inquiry-top"><i class="fas fa-phone-alt"></i><span>Inquiries:</span><a href="tel:+254799323159">+254 799 323 159</a></div>
+    <div class="nav-links">
+      <a onclick="scrollToSection('hero')">Home</a>
+      <a onclick="scrollToSection('restaurants')">Restaurants</a>
+      <a onclick="showToast('Check out our offers!', 'tag')">Offers</a>
+      <a onclick="showToast('Adrian Delicacies – made with love.', 'heart')">About</a>
+    </div>
+    <div class="nav-icons">
+      <i class="fas fa-search" onclick="focusSearch()"></i>
+      <i class="fas fa-user" onclick="showToast('Profile coming soon!', 'user')"></i>
+      <div class="cart-badge" id="cartIcon" data-count="0" onclick="openCart()"><i class="fas fa-shopping-bag"></i></div>
+    </div>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>Delicious food, <br><span>delivered fast</span> to your door</h1>
+      <p>Order from the best local restaurants and enjoy restaurant-quality meals at home.</p>
+      <div class="search-box">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" id="searchInput" placeholder="Search dishes or restaurants...">
+        <button onclick="handleSearch()">Find food</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop&q=80" alt="Delicious food">
+    </div>
+  </section>
+
+  <section class="categories" id="categories">
+    <div class="section-header">
+      <h2>Explore categories</h2>
+      <a onclick="clearFilter()">See all <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="category-grid" id="categoryGrid">
+      <div class="category-card" data-category="Pizza"><i class="fas fa-pizza-slice"></i> Pizza</div>
+      <div class="category-card" data-category="Burgers"><i class="fas fa-hamburger"></i> Burgers</div>
+      <div class="category-card" data-category="Sushi"><i class="fas fa-fish"></i> Sushi</div>
+      <div class="category-card" data-category="Vegan"><i class="fas fa-leaf"></i> Vegan</div>
+      <div class="category-card" data-category="Breakfast"><i class="fas fa-mug-hot"></i> Breakfast</div>
+      <div class="category-card" data-category="Desserts"><i class="fas fa-ice-cream"></i> Desserts</div>
+    </div>
+  </section>
+
+  <section class="restaurants" id="restaurants">
+    <div class="section-header">
+      <h2 id="menuTitle">Popular near you</h2>
+      <a onclick="clearFilter()">View all <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="dish-grid" id="dishGrid">
+
+      <div class="dish-card" data-category="Pizza" data-name="Margherita Pizza">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 1,500</span></div>
+        <div class="dish-info"><h3>Margherita Pizza</h3><div class="restaurant-name"><i class="fas fa-store"></i> Bella Napoli</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.8</span><span class="time"><i class="fas fa-clock"></i> 20-30 min</span><button class="add-to-cart" data-name="Margherita Pizza" data-price="1500" data-restaurant="Bella Napoli"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <div class="dish-card" data-category="Burgers" data-name="Smash Burger">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 1,100</span></div>
+        <div class="dish-info"><h3>Smash Burger</h3><div class="restaurant-name"><i class="fas fa-store"></i> Burger Lab</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.7</span><span class="time"><i class="fas fa-clock"></i> 15-25 min</span><button class="add-to-cart" data-name="Smash Burger" data-price="1100" data-restaurant="Burger Lab"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <div class="dish-card" data-category="Sushi" data-name="Salmon Sushi Set">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 2,200</span></div>
+        <div class="dish-info"><h3>Salmon Sushi Set</h3><div class="restaurant-name"><i class="fas fa-store"></i> Sakura House</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.9</span><span class="time"><i class="fas fa-clock"></i> 25-35 min</span><button class="add-to-cart" data-name="Salmon Sushi Set" data-price="2200" data-restaurant="Sakura House"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <div class="dish-card" data-category="Vegan" data-name="Buddha Bowl">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 1,250</span></div>
+        <div class="dish-info"><h3>Buddha Bowl</h3><div class="restaurant-name"><i class="fas fa-store"></i> Green &amp; Co.</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.6</span><span class="time"><i class="fas fa-clock"></i> 20-30 min</span><button class="add-to-cart" data-name="Buddha Bowl" data-price="1250" data-restaurant="Green &amp; Co."><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <!-- Breakfast Items with Clear Photos -->
+      <div class="dish-card" data-category="Breakfast" data-name="Avocado Toast">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 950</span></div>
+        <div class="dish-info"><h3>Avocado Toast</h3><div class="restaurant-name"><i class="fas fa-store"></i> Morning Brew</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.8</span><span class="time"><i class="fas fa-clock"></i> 10-15 min</span><button class="add-to-cart" data-name="Avocado Toast" data-price="950" data-restaurant="Morning Brew"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <div class="dish-card" data-category="Breakfast" data-name="Pancake Stack">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 850</span></div>
+        <div class="dish-info"><h3>Pancake Stack</h3><div class="restaurant-name"><i class="fas fa-store"></i> Morning Brew</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.9</span><span class="time"><i class="fas fa-clock"></i> 12-18 min</span><button class="add-to-cart" data-name="Pancake Stack" data-price="850" data-restaurant="Morning Brew"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <!-- Chapati - Clear photo -->
+      <div class="dish-card" data-category="Breakfast" data-name="Chapati">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1626074353765-517a681e40be?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 50</span></div>
+        <div class="dish-info"><h3>Chapati</h3><div class="restaurant-name"><i class="fas fa-store"></i> Mama's Kitchen</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.9</span><span class="time"><i class="fas fa-clock"></i> 10-15 min</span><button class="add-to-cart" data-name="Chapati" data-price="50" data-restaurant="Mama's Kitchen"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <!-- Andazi (Ndazi) - Clear photo -->
+      <div class="dish-card" data-category="Breakfast" data-name="Andazi">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1584776296946-10e9d2c84c47?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 30</span></div>
+        <div class="dish-info"><h3>Andazi (Ndazi)</h3><div class="restaurant-name"><i class="fas fa-store"></i> Mama's Kitchen</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.8</span><span class="time"><i class="fas fa-clock"></i> 10-15 min</span><button class="add-to-cart" data-name="Andazi (Ndazi)" data-price="30" data-restaurant="Mama's Kitchen"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+      <div class="dish-card" data-category="Desserts" data-name="Chocolate Lava Cake">
+        <div class="dish-image" style="background-image:url('https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&auto=format&fit=crop&q=80');"><span class="price-tag">KSh 750</span></div>
+        <div class="dish-info"><h3>Chocolate Lava Cake</h3><div class="restaurant-name"><i class="fas fa-store"></i> Sweet Tooth</div><div class="dish-meta"><span><i class="fas fa-star"></i> 4.7</span><span class="time"><i class="fas fa-clock"></i> 15-20 min</span><button class="add-to-cart" data-name="Chocolate Lava Cake" data-price="750" data-restaurant="Sweet Tooth"><i class="fas fa-plus"></i></button></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="promo-banner">
+    <div class="banner-content">
+      <div class="banner-text"><h3>Get 30% off your first order</h3><p>Use code <strong>ADRIAN30</strong> at checkout.</p></div>
+      <button class="banner-btn" onclick="scrollToSection('restaurants')">Order now <i class="fas fa-chevron-right"></i></button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h4><i class="fas fa-utensils"></i> Adrian Delicacies</h4>
+        <p>Delicious food from the best local restaurants, delivered with care.</p>
+        <div class="footer-inquiry"><i class="fas fa-headset"></i><span>Inquiries:</span><a href="tel:+254799323159">+254 799 323 159</a></div>
+      </div>
+      <div class="footer-links">
+        <div class="link-column"><h5>Company</h5><a onclick="showToast('About page coming soon.','info')">About us</a><a onclick="showToast('Careers coming soon.','briefcase')">Careers</a><a onclick="showToast('Blog coming soon.','pen')">Blog</a></div>
+        <div class="link-column"><h5>For customers</h5><a onclick="showToast('Help center coming soon.','question')">Help center</a><a onclick="showToast('Order tracking coming soon.','map')">Order tracking</a><a onclick="showToast('Privacy policy coming soon.','lock')">Privacy</a></div>
+        <div class="link-column"><h5>For partners</h5><a onclick="showToast('Partner signup coming soon.','handshake')">Add your restaurant</a><a onclick="showToast('Partner portal coming soon.','door')">Partner portal</a><a onclick="showToast('Delivery jobs coming soon.','bicycle')">Delivery jobs</a></div>
+      </div>
+    </div>
+    <div class="copyright">© 2025 Adrian Delicacies. All rights reserved. Made with <i class="fas fa-heart" style="color:#ff6b35;"></i></div>
+  </footer>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle" id="toastIcon"></i><span id="toastMessage">Added to cart</span></div>
+
+  <div class="cart-modal-overlay" id="cartModalOverlay">
+    <div class="cart-modal">
+      <button class="close-modal" onclick="closeCart()"><i class="fas fa-times"></i></button>
+      <h2><i class="fas fa-shopping-bag"></i> Your Cart</h2>
+      <div id="cartItemsContainer"></div>
+      <div class="cart-total" id="cartTotal" style="display:none;"><span>Total</span><span id="totalAmount">KSh 0</span></div>
+      <button class="checkout-btn" id="checkoutBtn" style="display:none;" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    var cart = [];
+
+    function showToast(message, iconName) {
+      iconName = iconName || 'check-circle';
+      document.getElementById('toastIcon').className = 'fas fa-' + iconName;
+      document.getElementById('toastMessage').textContent = message;
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(function() { toast.classList.remove('show'); }, 2500);
+    }
+
+    function scrollToSection(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    function focusSearch() { document.getElementById('searchInput').focus(); }
+
+    function filterCategory(category) {
+      var cards = document.querySelectorAll('.dish-card');
+      var visibleCount = 0;
+      
+      for (var i = 0; i < cards.length; i++) {
+        if (cards[i].getAttribute('data-category') === category) {
+          cards[i].style.display = 'flex';
+          visibleCount++;
+        } else {
+          cards[i].style.display = 'none';
+        }
+      }
+
+      var catCards = document.querySelectorAll('.category-card');
+      for (var j = 0; j < catCards.length; j++) {
+        if (catCards[j].getAttribute('data-category') === category) {
+          catCards[j].classList.add('active');
+        } else {
+          catCards[j].classList.remove('active');
+        }
+      }
+
+      document.getElementById('menuTitle').textContent = category + ' menu';
+
+      var grid = document.getElementById('dishGrid');
+      var existing = grid.querySelector('.no-results');
+      if (existing) existing.remove();
+
+      if (visibleCount === 0) {
+        var nr = document.createElement('div');
+        nr.className = 'no-results';
+        nr.innerHTML = '<i class="fas fa-search"></i><p>No dishes in this category yet.<br>Check back soon!</p>';
+        grid.appendChild(nr);
+      }
+
+      scrollToSection('restaurants');
+      showToast('Showing ' + category + ' menu', 'filter');
+    }
+
+    function clearFilter() {
+      var cards = document.querySelectorAll('.dish-card');
+      for (var i = 0; i < cards.length; i++) { cards[i].style.display = 'flex'; }
+      
+      var catCards = document.querySelectorAll('.category-card');
+      for (var j = 0; j < catCards.length; j++) { catCards[j].classList.remove('active'); }
+      
+      document.getElementById('menuTitle').textContent = 'Popular near you';
+      
+      var nr = document.querySelector('.no-results');
+      if (nr) nr.remove();
+      
+      scrollToSection('restaurants');
+    }
+
+    function handleSearch() {
+      var query = document.getElementById('searchInput').value.trim().toLowerCase();
+      if (!query) { showToast('Please type something to search', 'search'); return; }
+
+      var cards = document.querySelectorAll('.dish-card');
+      var found = 0;
+
+      for (var i = 0; i < cards.length; i++) {
+        var name = cards[i].getAttribute('data-name').toLowerCase();
+        var rest = cards[i].querySelector('.restaurant-name').textContent.toLowerCase();
+        if (name.indexOf(query) !== -1 || rest.indexOf(query) !== -1) {
+          cards[i].style.display = 'flex';
+          found++;
+        } else {
+          cards[i].style.display = 'none';
+        }
+      }
+
+      var catCards = document.querySelectorAll('.category-card');
+      for (var j = 0; j < catCards.length; j++) { catCards[j].classList.remove('active'); }
+
+      document.getElementById('menuTitle').textContent = 'Search results for "' + query + '"';
+
+      var grid = document.getElementById('dishGrid');
+      var existing = grid.querySelector('.no-results');
+      if (existing) existing.remove();
+
+      if (found === 0) {
+        var nr = document.createElement('div');
+        nr.className = 'no-results';
+        nr.innerHTML
